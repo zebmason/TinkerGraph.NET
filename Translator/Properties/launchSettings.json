@@ -1,0 +1,8 @@
+{
+  "profiles": {
+    "Translator": {
+      "commandName": "Project",
+      "commandLineArgs": "C:\\Projects\\GitHub\\tinkerpop\\tinkergraph-gremlin\\src\\main\\java\\org\\apache\\tinkerpop\\gremlin\\tinkergraph C:\\Projects\\GitHub\\TinkerGraph.NET\\Translated"
+    }
+  }
+}
