@@ -8,10 +8,13 @@
 
         private readonly string _csharp;
 
-        public Traverser(string java, string csharp)
+        private readonly ITranslator _translator;
+
+        public Traverser(string java, string csharp, ITranslator translator)
         {
             _java = java;
             _csharp = csharp;
+            _translator= translator;
         }
 
         private string CSharp(string java)
@@ -28,10 +31,14 @@
             return csharp.Substring(0, csharp.Length - 4) + "cs";
         }
 
+        private string NameSpace(string direc)
+        {
+            var name = direc.Substring(_csharp.Length + 1);
+            return  $"TinkerGraph.NET.{name.Replace("\\", ".")}";
+        }
+
         private void Traverse(string local)
         {
-            var csharp = _csharp + local.Substring(_java.Length);
-
             foreach (var dir in Directory.GetDirectories(local))
             {
                 Traverse(dir);
@@ -42,7 +49,15 @@
                 if (Path.GetExtension(filePath) != ".java")
                     continue;
 
-                Translator.Translate(filePath, CSharp(filePath));
+                var csharp = CSharp(filePath);
+                var direc = Path.GetDirectoryName(csharp);
+                Directory.CreateDirectory(direc);
+
+                var nameSpace = NameSpace(direc);
+                var lines = File.ReadAllText(filePath);
+                lines = _translator.Translate(lines, nameSpace);
+                File.WriteAllText(csharp, lines);
+
             }
         }
 

@@ -1,10 +1,10 @@
 ﻿namespace Translator
 {
-    internal class Translator : ITranslator
+    internal class Stub : ITranslator
     {
         public string Translate(string java, string nameSpace)
         {
-            return java;
+            return string.Empty;
         }
     }
 }
